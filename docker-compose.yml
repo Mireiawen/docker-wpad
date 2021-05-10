@@ -1,0 +1,27 @@
+---
+## /* vim: set tabstop=2 softtabstop=2 shiftwidth=2 expandtab smarttab autoindent: */
+
+version: '3.7'
+
+services:
+  wpad:
+    build:
+      context: '.'
+    image: 'mireiawen/wpad:latest'
+    restart: 'always'
+    network_mode: 'bridge'
+    hostname: '$HOSTNAME.$DOMAIN'
+    container_name: 'wpad'
+    labels:
+    - 'traefik.enable=true'
+    - 'traefik.http.routers.wpad.rule=Host(`$HOSTNAME.$DOMAIN`)'
+    - 'traefik.http.routers.wpad.entrypoints=web'
+    - 'traefik.http.routers.wpad.middlewares=wpad-whitelist,http-to-https'
+    - 'traefik.http.routers.wpad.service=wpad'
+    - 'traefik.http.routers.wpad-secure.rule=Host(`$HOSTNAME.$DOMAIN`)'
+    - 'traefik.http.routers.wpad-secure.entrypoints=websecure'
+    - 'traefik.http.routers.wpad-secure.middlewares=wpad-whitelist'
+    - 'traefik.http.routers.wpad-secure.service=wpad'
+    - 'traefik.http.middlewares.wpad-whitelist.ipwhitelist.sourcerange=$NETWORKS'
+    - 'traefik.http.services.wpad.loadbalancer.passhostheader=true'
+    - 'traefik.http.services.wpad.loadbalancer.server.port=80'
