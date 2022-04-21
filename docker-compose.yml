@@ -16,13 +16,9 @@ services:
     labels:
     - 'traefik.enable=true'
     - 'traefik.http.routers.wpad.rule=Host(`$HOSTNAME.$DOMAIN`)'
-    - 'traefik.http.routers.wpad.entrypoints=web'
-    - 'traefik.http.routers.wpad.middlewares=ipwhitelist@file,http-to-https@file'
+    - 'traefik.http.routers.wpad.entrypoints=websecure'
+    - 'traefik.http.routers.wpad.middlewares=$MIDDLEWARE'
     - 'traefik.http.routers.wpad.service=wpad'
-    - 'traefik.http.routers.wpad-secure.rule=Host(`$HOSTNAME.$DOMAIN`)'
-    - 'traefik.http.routers.wpad-secure.entrypoints=websecure'
-    - 'traefik.http.routers.wpad-secure.middlewares=ipwhitelist@file'
-    - 'traefik.http.routers.wpad-secure.service=wpad'
     - 'traefik.http.services.wpad.loadbalancer.passhostheader=true'
     - 'traefik.http.services.wpad.loadbalancer.server.port=80'
 
