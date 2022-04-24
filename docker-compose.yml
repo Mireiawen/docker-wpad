@@ -9,12 +9,11 @@ services:
       context: '.'
     image: 'mireiawen/wpad:latest'
     restart: 'unless-stopped'
-    hostname: '$HOSTNAME.$DOMAIN'
-    container_name: 'wpad'
     networks:
     - 'traefik'
     labels:
     - 'traefik.enable=true'
+    - 'traefik.docker.network=traefik'
     - 'traefik.http.routers.wpad.rule=Host(`$HOSTNAME.$DOMAIN`)'
     - 'traefik.http.routers.wpad.entrypoints=websecure'
     - 'traefik.http.routers.wpad.middlewares=$MIDDLEWARE'
